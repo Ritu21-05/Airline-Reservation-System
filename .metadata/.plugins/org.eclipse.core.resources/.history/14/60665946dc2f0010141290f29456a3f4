@@ -1,0 +1,84 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class AddAdmin {
+
+    public AddAdmin(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Admin Panel", true, true, true, true);
+        internalFrame.setSize(700, 400);
+        internalFrame.setLayout(null);
+        internalFrame.getContentPane().setBackground(Color.LIGHT_GRAY);
+
+        // Title
+        JLabel title = new JLabel("Welcome to the Admin Panel", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setOpaque(true);
+        title.setBackground(Color.LIGHT_GRAY);
+        title.setForeground(Color.BLUE);
+        title.setBounds(180, 10, 350, 30);
+        internalFrame.add(title);
+
+        // Left Panel
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(30, 60, 300, 250);
+        internalFrame.add(leftPanel);
+
+        // Right Panel
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(350, 60, 300, 250);
+        internalFrame.add(rightPanel);
+
+        // Left labels and fields
+        String[] leftLabels = {"Admin ID", "First Name", "Last Name"};
+        int y = 20;
+        for (String label : leftLabels) {
+            JLabel lbl = new JLabel(label);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(10, y, 100, 25);
+            leftPanel.add(lbl);
+
+            JTextField tf = new JTextField();
+            tf.setBounds(120, y, 150, 25);
+            leftPanel.add(tf);
+
+            y += 40;
+        }
+
+        // Right: Username
+        JLabel usernameLbl = new JLabel("Username");
+        usernameLbl.setForeground(Color.WHITE);
+        usernameLbl.setBounds(10, 20, 100, 25);
+        rightPanel.add(usernameLbl);
+
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(120, 20, 150, 25);
+        rightPanel.add(usernameField);
+
+        // Right: Password
+        JLabel passwordLbl = new JLabel("Password");
+        passwordLbl.setForeground(Color.WHITE);
+        passwordLbl.setBounds(10, 60, 100, 25);
+        rightPanel.add(passwordLbl);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(120, 60, 150, 25);
+        rightPanel.add(passwordField);
+
+        // Buttons
+        JButton addBtn = new JButton("Add");
+        addBtn.setBounds(50, 120, 100, 30);
+        rightPanel.add(addBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(160, 120, 100, 30);
+        rightPanel.add(cancelBtn);
+
+        // Add frame to desktop
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}

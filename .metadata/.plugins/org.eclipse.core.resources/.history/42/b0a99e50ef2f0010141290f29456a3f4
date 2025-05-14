@@ -1,0 +1,189 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class BookTicket {
+    public BookTicket(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Book Ticket", true, true, true, true);
+        internalFrame.setSize(1000, 500);
+        internalFrame.setLayout(null);
+
+        internalFrame.getContentPane().setBackground(Color.LIGHT_GRAY);
+
+        // === Left Panel (Search Flights) ===
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(20, 20, 400, 200);
+        internalFrame.add(leftPanel);
+
+        JLabel searchTitle = new JLabel("Search your Flights", SwingConstants.CENTER);
+        searchTitle.setForeground(Color.WHITE);
+        searchTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        searchTitle.setBounds(100, 10, 200, 25);
+        leftPanel.add(searchTitle);
+
+        JLabel arrivalLbl = new JLabel("Arrival:");
+        arrivalLbl.setForeground(Color.WHITE);
+        arrivalLbl.setBounds(50, 60, 80, 25);
+        leftPanel.add(arrivalLbl);
+
+        JComboBox<String> arrivalBox = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        arrivalBox.setBounds(150, 60, 180, 25);
+        leftPanel.add(arrivalBox);
+
+        JLabel departureLbl = new JLabel("Departure:");
+        departureLbl.setForeground(Color.WHITE);
+        departureLbl.setBounds(50, 100, 80, 25);
+        leftPanel.add(departureLbl);
+
+        JComboBox<String> departureBox = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        departureBox.setBounds(150, 100, 180, 25);
+        leftPanel.add(departureBox);
+
+        JButton searchFlightBtn = new JButton("Search");
+        searchFlightBtn.setBounds(150, 140, 100, 25);
+        leftPanel.add(searchFlightBtn);
+
+        // === Flight Table ===
+        JTable flightTable = new JTable();
+        JScrollPane tablePane = new JScrollPane(flightTable);
+        tablePane.setBounds(20, 240, 940, 100);
+        internalFrame.add(tablePane);
+
+        // === Right Panel (Customer & Booking Details) ===
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(450, 20, 500, 200);
+        internalFrame.add(rightPanel);
+
+        String[] labels = {
+            "Customer ID", "First Name", "Last Name", "Contact", "Gender", "Fare",
+            "Total Tickets", "Total Fare", "Discount"
+        };
+        JTextField[] textFields = new JTextField[labels.length];
+
+        int y = 10;
+        for (int i = 0; i < labels.length; i++) {
+            JLabel lbl = new JLabel(labels[i]);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(10, y, 100, 25);
+            rightPanel.add(lbl);
+
+            JTextField tf = new JTextField();
+            tf.setBounds(120, y, 150, 25);
+            rightPanel.add(tf);
+            textFields[i] = tf;
+
+            y += 30;
+        }
+
+        JButton searchCustomerBtn = new JButton("Search");
+        searchCustomerBtn.setBounds(280, 10, 100, 25);
+        rightPanel.add(searchCustomerBtn);
+
+        JButton calcFareBtn = new JButton("Calculate Fare");
+        calcFareBtn.setBounds(280, 190, 150, 25);
+        rightPanel.add(calcFareBtn);
+
+        // === Bottom Buttons ===
+        JButton bookBtn = new JButton("Book");
+        bookBtn.setBounds(400, 360, 100, 30);
+        internalFrame.add(bookBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(520, 360, 100, 30);
+        internalFrame.add(cancelBtn);
+
+        // === Events ===
+
+        // Search Flights
+        searchFlightBtn.addActionListener(e -> {
+            String arrival = (String) arrivalBox.getSelectedItem();
+            String departure = (String) departureBox.getSelectedItem();
+
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project", "ritu", "ritu123")) {
+                PreparedStatement pst = con.prepareStatement("SELECT * FROM Flight WHERE Arrival = ? AND Departure = ?");
+                pst.setString(1, arrival);
+                pst.setString(2, departure);
+
+                ResultSet rs = pst.executeQuery();
+                flightTable.setModel(DbUtils.resultSetToTableModel(rs));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Search Customer
+        searchCustomerBtn.addActionListener(e -> {
+            String customerId = textFields[0].getText();
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project", "ritu", "ritu123")) {
+                PreparedStatement pst = con.prepareStatement("SELECT * FROM Customer WHERE CustomerID = ?");
+                pst.setString(1, customerId);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    textFields[1].setText(rs.getString("FirstName"));
+                    textFields[2].setText(rs.getString("LastName"));
+                    textFields[3].setText(rs.getString("Contact"));
+                    textFields[4].setText(rs.getString("Gender"));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Customer Not Found");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Calculate Fare
+        calcFareBtn.addActionListener(e -> {
+            try {
+                int fare = Integer.parseInt(textFields[5].getText());
+                int tickets = Integer.parseInt(textFields[6].getText());
+                int discount = Integer.parseInt(textFields[8].getText());
+
+                int total = fare * tickets;
+                total -= discount;
+
+                textFields[7].setText(String.valueOf(total));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Invalid Fare/Ticket/Discount");
+            }
+        });
+
+        // Book Ticket
+        bookBtn.addActionListener(e -> {
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project", "ritu", "ritu123")) {
+                int selectedRow = flightTable.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(null, "Please select a flight");
+                    return;
+                }
+
+                String flightId = flightTable.getValueAt(selectedRow, 0).toString();
+                String customerId = textFields[0].getText();
+                String totalFare = textFields[7].getText();
+
+                PreparedStatement pst = con.prepareStatement("INSERT INTO Ticket (FlightID, CustomerID, Fare) VALUES (?, ?, ?)");
+                pst.setString(1, flightId);
+                pst.setString(2, customerId);
+                pst.setString(3, totalFare);
+
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Ticket Booked Successfully");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Cancel
+        cancelBtn.addActionListener(e -> internalFrame.dispose());
+
+        // Add to DesktopPane
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}

@@ -1,0 +1,106 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BookTicket {
+        BookTicket(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Book Ticket", true, true, true, true);
+        internalFrame.setSize(750, 400);
+        internalFrame.setLayout(null);
+        internalFrame.getContentPane().setBackground(Color.BLUE);
+
+        // Title
+        JLabel title = new JLabel("Welcome to the Ticket Booking Panel", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setOpaque(true);
+        title.setBackground(Color.BLUE);
+        title.setForeground(Color.WHITE);
+        title.setBounds(180, 10, 400, 30);
+        internalFrame.add(title);
+
+        // Left Panel
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(30, 60, 340, 250);
+        internalFrame.add(leftPanel);
+
+        // Right Panel
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(400, 60, 300, 250);
+        internalFrame.add(rightPanel);
+
+        // Left fields
+        JLabel flightIdLbl = new JLabel("Flight ID");
+        flightIdLbl.setForeground(Color.WHITE);
+        flightIdLbl.setBounds(10, 10, 100, 25);
+        leftPanel.add(flightIdLbl);
+        JTextField flightIdField = new JTextField();
+        flightIdField.setBounds(120, 10, 180, 25);
+        leftPanel.add(flightIdField);
+
+        JLabel customerIdLbl = new JLabel("Customer ID");
+        customerIdLbl.setForeground(Color.WHITE);
+        customerIdLbl.setBounds(10, 50, 100, 25);
+        leftPanel.add(customerIdLbl);
+        JTextField customerIdField = new JTextField();
+        customerIdField.setBounds(120, 50, 180, 25);
+        leftPanel.add(customerIdField);
+
+        JLabel dateLbl = new JLabel("Date");
+        dateLbl.setForeground(Color.WHITE);
+        dateLbl.setBounds(10, 90, 100, 25);
+        leftPanel.add(dateLbl);
+        JTextField dateField = new JTextField("DD-MM-YYYY");
+        dateField.setBounds(120, 90, 180, 25);
+        leftPanel.add(dateField);
+
+        JLabel seatsLbl = new JLabel("Seats");
+        seatsLbl.setForeground(Color.WHITE);
+        seatsLbl.setBounds(10, 130, 100, 25);
+        leftPanel.add(seatsLbl);
+        JTextField seatsField = new JTextField();
+        seatsField.setBounds(120, 130, 180, 25);
+        leftPanel.add(seatsField);
+
+        // Right fields
+        JLabel classLbl = new JLabel("Class");
+        classLbl.setForeground(Color.WHITE);
+        classLbl.setBounds(10, 10, 100, 25);
+        rightPanel.add(classLbl);
+        String[] classes = {"Economy", "Business", "First"};
+        JComboBox<String> classBox = new JComboBox<>(classes);
+        classBox.setBounds(120, 10, 150, 25);
+        rightPanel.add(classBox);
+
+        JLabel priceLbl = new JLabel("Price");
+        priceLbl.setForeground(Color.WHITE);
+        priceLbl.setBounds(10, 50, 100, 25);
+        rightPanel.add(priceLbl);
+        JTextField priceField = new JTextField();
+        priceField.setBounds(120, 50, 150, 25);
+        rightPanel.add(priceField);
+
+        JLabel totalLbl = new JLabel("Total");
+        totalLbl.setForeground(Color.WHITE);
+        totalLbl.setBounds(10, 90, 100, 25);
+        rightPanel.add(totalLbl);
+        JTextField totalField = new JTextField();
+        totalField.setBounds(120, 90, 150, 25);
+        rightPanel.add(totalField);
+
+        // Bottom Buttons
+        JButton bookBtn = new JButton("Book");
+        bookBtn.setBounds(240, 330, 100, 30);
+        internalFrame.add(bookBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(360, 330, 100, 30);
+        internalFrame.add(cancelBtn);
+
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}
+

@@ -1,0 +1,110 @@
+package com.revati.airline;
+import javax.swing.*;
+import java.awt.*;
+
+public class BookFlight {
+    JInternalFrame frame;
+
+    public BookFlight() {
+        frame = new JInternalFrame("Book the dream flight ticket for you", true, true, true, true);
+        frame.setSize(900, 500);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(Color.BLUE);
+
+        // Left panel: Flight Search
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(30, 30, 350, 400);
+        frame.add(leftPanel);
+
+        JLabel flightSearchLabel = new JLabel("Search your Flights", SwingConstants.CENTER);
+        flightSearchLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        flightSearchLabel.setForeground(Color.WHITE);
+        flightSearchLabel.setBounds(50, 10, 250, 25);
+        leftPanel.add(flightSearchLabel);
+
+        JLabel arrivalLabel = new JLabel("Arrival");
+        arrivalLabel.setForeground(Color.WHITE);
+        arrivalLabel.setBounds(30, 50, 100, 25);
+        leftPanel.add(arrivalLabel);
+
+        JComboBox<String> arrivalBox = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        arrivalBox.setBounds(150, 50, 150, 25);
+        leftPanel.add(arrivalBox);
+
+        JLabel departureLabel = new JLabel("Departure");
+        departureLabel.setForeground(Color.WHITE);
+        departureLabel.setBounds(30, 90, 100, 25);
+        leftPanel.add(departureLabel);
+
+        JComboBox<String> departureBox = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        departureBox.setBounds(150, 90, 150, 25);
+        leftPanel.add(departureBox);
+
+        JButton searchBtn = new JButton("Search");
+        searchBtn.setBounds(120, 130, 100, 25);
+        leftPanel.add(searchBtn);
+
+        JTable flightTable = new JTable(new Object[][]{{"", "", "", ""}}, new String[]{"Title 1", "Title 2", "Title 3", "Title 4"});
+        JScrollPane flightScroll = new JScrollPane(flightTable);
+        flightScroll.setBounds(20, 170, 310, 200);
+        leftPanel.add(flightScroll);
+
+        // Right panel: Customer & Booking
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(400, 30, 450, 400);
+        frame.add(rightPanel);
+
+        JLabel customerIdLabel = new JLabel("Customer ID");
+        customerIdLabel.setForeground(Color.WHITE);
+        customerIdLabel.setBounds(20, 10, 100, 25);
+        rightPanel.add(customerIdLabel);
+
+        JTextField customerIdField = new JTextField();
+        customerIdField.setBounds(130, 10, 150, 25);
+        rightPanel.add(customerIdField);
+
+        JButton searchCustomerBtn = new JButton("Search");
+        searchCustomerBtn.setBounds(300, 10, 100, 25);
+        rightPanel.add(searchCustomerBtn);
+
+        String[] labels = {"First Name", "Last Name", "Contact", "Gender", "Fare", "Total Tickets", "Total Fare", "Discount"};
+        int y = 50;
+        JTextField[] textFields = new JTextField[labels.length];
+
+        for (int i = 0; i < labels.length; i++) {
+            JLabel lbl = new JLabel(labels[i]);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(20, y, 100, 25);
+            rightPanel.add(lbl);
+
+            JTextField tf = new JTextField();
+            tf.setBounds(130, y, 150, 25);
+            rightPanel.add(tf);
+            textFields[i] = tf;
+
+            if (labels[i].equals("Total Tickets")) {
+                JButton calcBtn = new JButton("Calculate Fare");
+                calcBtn.setBounds(300, y, 130, 25);
+                rightPanel.add(calcBtn);
+            }
+
+            y += 35;
+        }
+
+        JButton bookBtn = new JButton("Book");
+        bookBtn.setBounds(100, 330, 100, 30);
+        rightPanel.add(bookBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(220, 330, 100, 30);
+        rightPanel.add(cancelBtn);
+        
+        frame.setVisible(true);
+    }
+
+    public JInternalFrame getBookFlightFrame() {
+        return frame;
+    }
+}

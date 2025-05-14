@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dirs>
+    <entry loc="/home/user/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_23.0.2.v20250131-0604" stamp="1745599592944"/>
+    <entry loc="/home/user/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_23.0.2.v20250131-0604/jre" stamp="1745599592944"/>
+    <entry loc="/usr/lib/jvm/java-8-openjdk-amd64" stamp="1746519556868"/>
+    <entry loc="/usr/lib/jvm/java-11-openjdk-amd64" stamp="1746519555819"/>
+    <entry loc="/usr/lib/jvm/jdk-21-oracle-x64" stamp="1705155478175"/>
+</dirs>

@@ -1,0 +1,107 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class SearchCustomer {
+        SearchCustomer(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Search Customer", true, true, true, true);
+        internalFrame.setSize(750, 400); // Slightly increased frame width
+        internalFrame.setLayout(null);
+        internalFrame.getContentPane().setBackground(Color.BLUE);
+
+        // Title Label
+        JLabel title = new JLabel("Welcome to the Search Panel", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setOpaque(true);
+        title.setBackground(Color.BLUE);
+        title.setForeground(Color.WHITE);
+        title.setBounds(200, 10, 350, 30);
+        internalFrame.add(title);
+
+        // Left panel
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(30, 60, 360, 250); // Wider left panel
+        internalFrame.add(leftPanel);
+
+        // Right panel
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(410, 60, 300, 250);
+        internalFrame.add(rightPanel);
+
+        // Left labels and fields
+        String[] leftLabels = {"Customer ID", "First Name", "Last Name", "Passport No.", "National ID", "Address"};
+        int y = 10;
+
+        for (String label : leftLabels) {
+            JLabel lbl = new JLabel(label);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(10, y, 100, 25);
+            leftPanel.add(lbl);
+
+            if (label.equals("Customer ID")) {
+                JTextField customerIdField = new JTextField();
+                customerIdField.setBounds(120, y, 150, 25);
+                leftPanel.add(customerIdField);
+
+                JButton searchBtn = new JButton("Search");
+                searchBtn.setBounds(280, y, 70, 25); // Fully visible
+                leftPanel.add(searchBtn);
+            } else if (!label.equals("Address")) {
+                JTextField tf = new JTextField();
+                tf.setBounds(120, y, 200, 25);
+                leftPanel.add(tf);
+            } else {
+                JTextArea ta = new JTextArea();
+                JScrollPane sp = new JScrollPane(ta);
+                sp.setBounds(120, y, 200, 60);
+                leftPanel.add(sp);
+                y += 35;
+            }
+
+            y += 35;
+        }
+
+        // Right panel components
+        JLabel contactLbl = new JLabel("Contact");
+        contactLbl.setForeground(Color.WHITE);
+        contactLbl.setBounds(10, 10, 100, 25);
+        rightPanel.add(contactLbl);
+        JTextField contactField = new JTextField();
+        contactField.setBounds(120, 10, 150, 25);
+        rightPanel.add(contactField);
+
+        JLabel genderLbl = new JLabel("Gender");
+        genderLbl.setForeground(Color.WHITE);
+        genderLbl.setBounds(10, 50, 100, 25);
+        rightPanel.add(genderLbl);
+
+        JRadioButton male = new JRadioButton("Male");
+        JRadioButton female = new JRadioButton("Female");
+        male.setBounds(120, 50, 70, 25);
+        female.setBounds(190, 50, 80, 25);
+        male.setBackground(Color.BLUE);
+        female.setBackground(Color.BLUE);
+        male.setForeground(Color.WHITE);
+        female.setForeground(Color.WHITE);
+
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(male);
+        genderGroup.add(female);
+        rightPanel.add(male);
+        rightPanel.add(female);
+
+        JLabel dobLbl = new JLabel("Date of Birth");
+        dobLbl.setForeground(Color.WHITE);
+        dobLbl.setBounds(10, 90, 100, 25);
+        rightPanel.add(dobLbl);
+        JTextField dobField = new JTextField("DD-MM-YYYY");
+        dobField.setBounds(120, 90, 150, 25);
+        rightPanel.add(dobField);
+
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}

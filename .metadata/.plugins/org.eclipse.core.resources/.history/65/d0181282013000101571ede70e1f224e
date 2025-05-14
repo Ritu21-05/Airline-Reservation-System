@@ -1,0 +1,159 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class BookFlight {
+    public BookFlight(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Book Ticket", true, true, true, true);
+        internalFrame.setSize(900, 500);
+        internalFrame.setLayout(null);
+
+        // === Flight Search Section ===
+        JLabel lblSearch = new JLabel("Search your Flights");
+        lblSearch.setFont(new Font("Arial", Font.BOLD, 16));
+        lblSearch.setBounds(20, 10, 200, 25);
+        internalFrame.add(lblSearch);
+
+        JLabel lblArrival = new JLabel("Arrival:");
+        lblArrival.setBounds(20, 50, 50, 25);
+        internalFrame.add(lblArrival);
+
+        JComboBox<String> cbArrival = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        cbArrival.setBounds(80, 50, 120, 25);
+        internalFrame.add(cbArrival);
+
+        JLabel lblDeparture = new JLabel("Departure:");
+        lblDeparture.setBounds(220, 50, 70, 25);
+        internalFrame.add(lblDeparture);
+
+        JComboBox<String> cbDeparture = new JComboBox<>(new String[]{"Delhi", "Mumbai", "Chennai", "Kolkata"});
+        cbDeparture.setBounds(300, 50, 120, 25);
+        internalFrame.add(cbDeparture);
+
+        JButton btnSearch = new JButton("Search");
+        btnSearch.setBounds(450, 50, 100, 25);
+        internalFrame.add(btnSearch);
+
+        // === Flight Table ===
+        JTable flightTable = new JTable();
+        JScrollPane tablePane = new JScrollPane(flightTable);
+        tablePane.setBounds(20, 90, 850, 150);
+        internalFrame.add(tablePane);
+
+        // === Booking Panel ===
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.DARK_GRAY);
+        rightPanel.setBounds(500, 250, 370, 200);
+        internalFrame.add(rightPanel);
+
+        String[] labels = {
+            "Customer ID", "First Name", "Last Name", "Contact", "Gender", "Fare",
+            "Total Tickets", "Total Fare", "Discount"
+        };
+
+        int y = 10;
+        JTextField[] textFields = new JTextField[labels.length];
+
+        for (int i = 0; i < labels.length; i++) {
+            JLabel lbl = new JLabel(labels[i]);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(10, y, 100, 25);
+            rightPanel.add(lbl);
+
+            JTextField tf = new JTextField();
+            tf.setBounds(120, y, 220, 25);
+            rightPanel.add(tf);
+            textFields[i] = tf;
+
+            y += 30;
+        }
+
+        JButton calcFareBtn = new JButton("Calculate Fare");
+        calcFareBtn.setBounds(120, y, 150, 25);
+        rightPanel.add(calcFareBtn);
+
+        JButton bookBtn = new JButton("Book");
+        bookBtn.setBounds(50, y + 40, 100, 25);
+        rightPanel.add(bookBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(200, y + 40, 100, 25);
+        rightPanel.add(cancelBtn);
+
+        // === Flight Search Action ===
+        btnSearch.addActionListener(e -> {
+            String arrival = (String) cbArrival.getSelectedItem();
+            String departure = (String) cbDeparture.getSelectedItem();
+
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project", "ritu", "ritu123");
+                 PreparedStatement pst = con.prepareStatement("SELECT * FROM Flight WHERE Arrival=? AND Departure=?")) {
+
+                pst.setString(1, arrival);
+                pst.setString(2, departure);
+                ResultSet rs = pst.executeQuery();
+
+                DefaultTableModel model = new DefaultTableModel(new String[]{
+                    "FlightID", "FlightName", "Arrival", "Departure", "Duration", "Date"
+                }, 0);
+
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("FlightID"),
+                        rs.getString("FlightName"),
+                        rs.getString("Arrival"),
+                        rs.getString("Departure"),
+                        rs.getString("Duration"),
+                        rs.getString("Date")
+                    });
+                }
+
+                flightTable.setModel(model);
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(internalFrame, "Error fetching flights: " + ex.getMessage());
+            }
+        });
+
+        // === Calculate Fare Action ===
+        calcFareBtn.addActionListener(e -> {
+            try {
+                int fare = Integer.parseInt(textFields[5].getText());
+                int tickets = Integer.parseInt(textFields[6].getText());
+                int total = fare * tickets;
+                textFields[7].setText(String.valueOf(total));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(internalFrame, "Enter valid numbers for Fare and Tickets");
+            }
+        });
+
+        // === Book Ticket Action ===
+        bookBtn.addActionListener(e -> {
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project", "ritu", "ritu123");
+                 PreparedStatement pst = con.prepareStatement(
+                     "INSERT INTO Ticket (CustomerID, FirstName, LastName, Contact, Gender, Fare, TotalTickets, TotalFare, Discount) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+
+                for (int i = 0; i < textFields.length; i++) {
+                    pst.setString(i + 1, textFields[i].getText());
+                }
+
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(internalFrame, "Ticket Booked Successfully!");
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(internalFrame, "Booking Failed: " + ex.getMessage());
+            }
+        });
+
+        // === Cancel Button ===
+        cancelBtn.addActionListener(e -> internalFrame.dispose());
+
+        // Add frame to desktop pane
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}

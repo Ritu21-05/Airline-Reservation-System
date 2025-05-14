@@ -1,0 +1,146 @@
+package com.revati.airline;
+import java.awt.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class AddCustomer{
+	
+	public static JInternalFrame getAddCustomerFrame() {
+		JInternalFrame internalFrame = new JInternalFrame("Add Customer", true, true, true, true);
+		internalFrame.setSize(700, 400);
+		internalFrame.setLayout(null);
+		internalFrame.getContentPane().setBackground(Color.BLUE);
+
+		// Title Label
+		JLabel title = new JLabel("Welcome to the Customer Panel", SwingConstants.CENTER);
+		title.setFont(new Font("Arial", Font.BOLD, 20));
+		title.setOpaque(true);
+		title.setBackground(Color.BLUE);
+		title.setForeground(Color.WHITE);
+		title.setBounds(150, 10, 450, 30);
+		internalFrame.add(title);
+
+		// Left panel
+		JPanel leftPanel = new JPanel(null);
+		leftPanel.setBackground(Color.BLUE);
+		leftPanel.setBounds(30, 60, 300, 250);
+		internalFrame.add(leftPanel);
+
+		// Right panel
+		JPanel rightPanel = new JPanel(null);
+		rightPanel.setBackground(Color.BLUE);
+		rightPanel.setBounds(350, 60, 300, 250);
+		internalFrame.add(rightPanel);
+
+		// Left labels and fields
+		String[] leftLabels = { "First Name", "Last Name", "Passport No.", "National ID", "Address"};
+		int y = 10;
+		JLabel cuslbl = new JLabel("Customer ID");
+		    cuslbl.setForeground(Color.WHITE);
+		    cuslbl.setBounds(10, y, 100, 25);
+		    leftPanel.add(cuslbl);
+			JTextField cusID = new JTextField();
+		        cusID.setBounds(120, y, 150, 25);
+		        leftPanel.add(cusID);
+				y+=35;
+				try {
+					Connection con;
+					PreparedStatement pre;
+					Class.forName("com.mysql.cj.jdbc.Driver");
+					con=DriverManager.getConnection("jdbc:mysql://localhost:3306/airline_project","ritu","ritu123");
+					pre=con.prepareStatement("SELECT MAX(CustomerID) FROM Customer");
+					ResultSet rs=pre.executeQuery();
+					rs.next();
+					String maxId = rs.getString("MAX(CustomerID)");
+					if (maxId == null) {
+					    cusID.setText("CS001");
+					} else {
+					    long id = Long.parseLong(maxId.substring(2));
+					    id++;
+					    cusID.setText("CS" + String.format("%03d", id));
+					}
+
+				}
+				catch(ClassNotFoundException |SQLException e) {
+					System.out.println(e.getMessage());
+					
+				}
+		for (String label : leftLabels) {
+		    JLabel lbl = new JLabel(label);
+		    lbl.setForeground(Color.WHITE);
+		    lbl.setBounds(10, y, 100, 25);
+		    leftPanel.add(lbl);
+
+		    if (!label.equals("Address")) {
+		        JTextField tf = new JTextField();
+		        tf.setBounds(120, y, 150, 25);
+		        leftPanel.add(tf);
+		    } else {
+		        JTextArea ta = new JTextArea();
+		        JScrollPane sp = new JScrollPane(ta);
+		        sp.setBounds(120, y, 150, 60);
+		        leftPanel.add(sp);
+		        y += 35; // extra height for textarea
+		    }
+
+		    y += 35;
+		}
+		
+		
+
+		// Right labels and fields
+		JLabel contactLbl = new JLabel("Contact");
+		contactLbl.setForeground(Color.WHITE);
+		contactLbl.setBounds(10, 10, 100, 25);
+		rightPanel.add(contactLbl);
+		JTextField contactField = new JTextField();
+		contactField.setBounds(120, 10, 150, 25);
+		rightPanel.add(contactField);
+
+		// Gender
+		JLabel genderLbl = new JLabel("Gender");
+		genderLbl.setForeground(Color.WHITE);
+		genderLbl.setBounds(10, 50, 100, 25);
+		rightPanel.add(genderLbl);
+
+		JRadioButton male = new JRadioButton("Male");
+		JRadioButton female = new JRadioButton("Female");
+		male.setBounds(120, 50, 70, 25);
+		female.setBounds(190, 50, 80, 25);
+		male.setBackground(Color.BLUE);
+		female.setBackground(Color.BLUE);
+		male.setForeground(Color.WHITE);
+		female.setForeground(Color.WHITE);
+
+		ButtonGroup genderGroup = new ButtonGroup();
+		genderGroup.add(male);
+		genderGroup.add(female);
+		rightPanel.add(male);
+		rightPanel.add(female);
+
+		// Date of Birth
+		JLabel dobLbl = new JLabel("Date of Birth");
+		dobLbl.setForeground(Color.WHITE);
+		dobLbl.setBounds(10, 90, 100, 25);
+		rightPanel.add(dobLbl);
+		JTextField dobField = new JTextField("DD-MM-YYYY"); // Placeholder; replace with JDateChooser if needed
+		dobField.setBounds(120, 90, 150, 25);
+		rightPanel.add(dobField);
+
+		// Buttons
+		JButton addBtn = new JButton("Add");
+		addBtn.setBounds(200, 330, 100, 30);
+		internalFrame.add(addBtn);
+
+		JButton deleteBtn = new JButton("Delete");
+		deleteBtn.setBounds(320, 330, 100, 30);
+		internalFrame.add(deleteBtn);
+		
+
+		
+		internalFrame.setVisible(true);
+		return internalFrame;
+	}
+	
+	
+}

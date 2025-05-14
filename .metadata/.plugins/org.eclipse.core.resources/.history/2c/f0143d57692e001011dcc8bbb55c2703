@@ -1,0 +1,129 @@
+package com.revati.airline;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BookFlight {
+    public void showBookFlight(JDesktopPane desktopPane) {
+        JInternalFrame internalFrame = new JInternalFrame("Book Flight", true, true, true, true);
+        internalFrame.setSize(800, 450);
+        internalFrame.setLayout(null);
+        internalFrame.getContentPane().setBackground(Color.BLUE);
+
+        // Title
+        JLabel title = new JLabel("Welcome to the Book Flight Panel", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setOpaque(true);
+        title.setBackground(Color.BLUE);
+        title.setForeground(Color.WHITE);
+        title.setBounds(200, 10, 400, 30);
+        internalFrame.add(title);
+
+        // Left Panel
+        JPanel leftPanel = new JPanel(null);
+        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBounds(30, 60, 350, 300);
+        internalFrame.add(leftPanel);
+
+        // Right Panel
+        JPanel rightPanel = new JPanel(null);
+        rightPanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(400, 60, 350, 300);
+        internalFrame.add(rightPanel);
+
+        // Left side inputs
+        String[] leftLabels = {"Source", "Destination", "Flight ID", "Customer ID"};
+        JTextField[] leftFields = new JTextField[leftLabels.length];
+        int y = 10;
+        for (int i = 0; i < leftLabels.length; i++) {
+            JLabel lbl = new JLabel(leftLabels[i]);
+            lbl.setForeground(Color.WHITE);
+            lbl.setBounds(10, y, 100, 25);
+            leftPanel.add(lbl);
+
+            JTextField tf = new JTextField();
+            tf.setBounds(120, y, 200, 25);
+            leftPanel.add(tf);
+            leftFields[i] = tf;
+
+            y += 40;
+
+            // Add "Search Flight" Button after Source and Destination
+            if (i == 1) {
+                JButton searchFlightBtn = new JButton("Search Flights");
+                searchFlightBtn.setBounds(120, y, 150, 25);
+                leftPanel.add(searchFlightBtn);
+
+                y += 40;
+            }
+        }
+
+        // Right side inputs
+        JLabel classLbl = new JLabel("Class");
+        classLbl.setForeground(Color.WHITE);
+        classLbl.setBounds(10, 10, 100, 25);
+        rightPanel.add(classLbl);
+        JComboBox<String> classBox = new JComboBox<>(new String[]{"Economy", "Business"});
+        classBox.setBounds(120, 10, 200, 25);
+        rightPanel.add(classBox);
+
+        JLabel dateLbl = new JLabel("Date");
+        dateLbl.setForeground(Color.WHITE);
+        dateLbl.setBounds(10, 50, 100, 25);
+        rightPanel.add(dateLbl);
+        JTextField dateField = new JTextField("DD-MM-YYYY");
+        dateField.setBounds(120, 50, 200, 25);
+        rightPanel.add(dateField);
+
+        JLabel seatsLbl = new JLabel("Seats");
+        seatsLbl.setForeground(Color.WHITE);
+        seatsLbl.setBounds(10, 90, 100, 25);
+        rightPanel.add(seatsLbl);
+        JTextField seatsField = new JTextField();
+        seatsField.setBounds(120, 90, 200, 25);
+        rightPanel.add(seatsField);
+
+        JLabel fareLbl = new JLabel("Fare/Seat");
+        fareLbl.setForeground(Color.WHITE);
+        fareLbl.setBounds(10, 130, 100, 25);
+        rightPanel.add(fareLbl);
+        JTextField fareField = new JTextField("5000");
+        fareField.setBounds(120, 130, 200, 25);
+        rightPanel.add(fareField);
+
+        JLabel totalLbl = new JLabel("Total Fare");
+        totalLbl.setForeground(Color.WHITE);
+        totalLbl.setBounds(10, 170, 100, 25);
+        rightPanel.add(totalLbl);
+        JTextField totalFareField = new JTextField();
+        totalFareField.setBounds(120, 170, 200, 25);
+        rightPanel.add(totalFareField);
+        totalFareField.setEditable(false);
+
+        // Auto-calculate total fare
+        seatsField.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                try {
+                    int seats = Integer.parseInt(seatsField.getText());
+                    int fare = Integer.parseInt(fareField.getText());
+                    totalFareField.setText(String.valueOf(seats * fare));
+                } catch (NumberFormatException ex) {
+                    totalFareField.setText("");
+                }
+            }
+        });
+
+        // Buttons
+        JButton bookBtn = new JButton("Book");
+        bookBtn.setBounds(250, 370, 100, 30);
+        internalFrame.add(bookBtn);
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(370, 370, 100, 30);
+        internalFrame.add(cancelBtn);
+
+        desktopPane.add(internalFrame);
+        internalFrame.setVisible(true);
+    }
+}

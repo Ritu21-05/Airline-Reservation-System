@@ -1,0 +1,97 @@
+package com.revati.airline
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class ViewTicket extends JInternalFrame {
+
+    // Labels to display ticket info
+    JLabel fnameLabel, lnameLabel, genderLabel, arrivalLabel, departureLabel, contactLabel, flightNameLabel;
+    JTextField ticketIdField;
+    JButton getTicketButton;
+
+    // Constructor
+    public ViewTicket() {
+        super("View Ticket", true, true, true, true);
+        getContentPane().setLayout(null);
+        getContentPane().setBackground(Color.BLUE);
+
+        JLabel ticketIdLbl = new JLabel("Ticket ID");
+        ticketIdLbl.setBounds(250, 20, 100, 30);
+        ticketIdLbl.setForeground(Color.WHITE);
+        getContentPane().add(ticketIdLbl);
+
+        ticketIdField = new JTextField();
+        ticketIdField.setBounds(350, 20, 100, 30);
+        getContentPane().add(ticketIdField);
+
+        getTicketButton = new JButton("Get Ticket");
+        getTicketButton.setBounds(470, 20, 120, 30);
+        getContentPane().add(getTicketButton);
+
+        JLabel heading = new JLabel("Thanks for Choosing Revati Airline");
+        heading.setBounds(220, 60, 400, 30);
+        heading.setFont(new Font("Arial", Font.ITALIC, 16));
+        heading.setForeground(Color.WHITE);
+        getContentPane().add(heading);
+
+        // Left labels
+        addLabel("First Name", 100, 100);
+        fnameLabel = addValueLabel(200, 100);
+
+        addLabel("Last Name", 100, 150);
+        lnameLabel = addValueLabel(200, 150);
+
+        addLabel("Gender", 100, 200);
+        genderLabel = addValueLabel(200, 200);
+
+        // Right labels
+        addLabel("Arrival", 400, 100);
+        arrivalLabel = addValueLabel(500, 100);
+
+        addLabel("Departure", 400, 150);
+        departureLabel = addValueLabel(500, 150);
+
+        addLabel("Contact No.", 400, 200);
+        contactLabel = addValueLabel(500, 200);
+
+        // Bottom label
+        addLabel("Flight Name", 100, 250);
+        flightNameLabel = addValueLabel(200, 250);
+
+        // Set internal frame size
+        setSize(700, 400);
+        setVisible(true);
+
+        // Sample action for button (replace with JDBC logic)
+        getTicketButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Sample data (replace with DB result later)
+                fnameLabel.setText("John");
+                lnameLabel.setText("Doe");
+                genderLabel.setText("Male");
+                arrivalLabel.setText("Delhi");
+                departureLabel.setText("Mumbai");
+                contactLabel.setText("9876543210");
+                flightNameLabel.setText("AirIndia 102");
+            }
+        });
+    }
+
+    // Helper method to add left-side labels
+    private void addLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, 100, 30);
+        label.setForeground(Color.WHITE);
+        getContentPane().add(label);
+    }
+
+    // Helper method to add value-holding labels
+    private JLabel addValueLabel(int x, int y) {
+        JLabel label = new JLabel("jLabel10");
+        label.setBounds(x, y, 150, 30);
+        label.setForeground(Color.WHITE);
+        getContentPane().add(label);
+        return label;
+    }
+}
