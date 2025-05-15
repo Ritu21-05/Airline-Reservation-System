@@ -1,3 +1,7 @@
+.metadata/
+.setting/
+bin/
+*.zip
 *.class
 *.log
 *.jar

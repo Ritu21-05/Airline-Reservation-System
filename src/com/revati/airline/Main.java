@@ -2,12 +2,15 @@ package com.revati.airline;
 
 
 	import javax.swing.*;
-	import java.awt.event.*;
+
+import java.awt.Color;
+import java.awt.event.*;
 
 	public class Main {
 	    public static void main(String[] args) {
 	        // Create main frame
 	        JFrame frame = new JFrame("Airline System");
+	        
 	        
 
 	        // Create menu bar
@@ -46,12 +49,13 @@ package com.revati.airline;
 
 	        // Create desktop pane
 	        JDesktopPane desktopPane = new JDesktopPane();
+	        desktopPane.setBackground(new Color(135,206,250));
 
 	        // Event handlers for menu items
 	        addCustomer.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
 	        		AddCustomer a=new AddCustomer();
-	        		desktopPane.add(a.getAddCustomerFrame());
+	        		desktopPane.add(a.getAddCustomerFrame(desktopPane));
 	        		
 	        		
 	        	}
@@ -73,7 +77,7 @@ package com.revati.airline;
 	        });
 	        bookFlight.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
-	        		BookFlight f=new BookFlight();
+	        		BookFlight f=new BookFlight(desktopPane);
 	        		desktopPane.add(f);
 	        		
 	        		
@@ -82,7 +86,7 @@ package com.revati.airline;
 	        });
 	        viewTicket.addActionListener(new ActionListener() {
 	        	public void actionPerformed(ActionEvent e) {
-	        		ViewTicket g=new ViewTicket();
+	        		ViewTicket g=new ViewTicket(desktopPane);
 	        		desktopPane.add(g);
 	        		g.setVisible(true);
 
@@ -95,7 +99,9 @@ package com.revati.airline;
 	        // Frame settings
 	        frame.setSize(1000, 800);
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        frame.setVisible(true);
+	        frame.setVisible(true);	      
+	        frame.setLocationRelativeTo(null);
+	        frame.setContentPane(desktopPane);
 	    }
 
 		

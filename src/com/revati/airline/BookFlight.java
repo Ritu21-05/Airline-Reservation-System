@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 public class BookFlight extends JInternalFrame {
@@ -37,29 +36,34 @@ public class BookFlight extends JInternalFrame {
     private JButton cancelButton;
     private JTextField ticketIDField;
 
-    public BookFlight() {
+    public BookFlight(JDesktopPane desktop) {
         initComponents();
         connectDatabase();
         autoID();
+
+        // Center the internal frame
+        Dimension desktopSize = desktop.getSize();
+        Dimension frameSize = getSize();
+        setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
     }
 
     private void initComponents() {
         setClosable(true);
         setTitle("Book The Dream Flight Ticket For You");
-        setSize(900, 600);
+        setSize(1000, 600);
         setLayout(null);
         setVisible(true);
 
         // Left Panel (Flight Search)
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.BLUE);
-        leftPanel.setBounds(10, 10, 530, 550);
+        leftPanel.setBounds(10, 10, 560, 540);
         leftPanel.setLayout(null);
 
         JLabel searchLabel = new JLabel("Search your Flights");
         searchLabel.setForeground(Color.WHITE);
         searchLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        searchLabel.setBounds(180, 10, 200, 30);
+        searchLabel.setBounds(180, 10, 250, 30);
         leftPanel.add(searchLabel);
 
         JLabel arrivalLabel = new JLabel("Arrival");
@@ -73,15 +77,15 @@ public class BookFlight extends JInternalFrame {
 
         JLabel departureLabel = new JLabel("Departure");
         departureLabel.setForeground(Color.WHITE);
-        departureLabel.setBounds(300, 60, 70, 25);
+        departureLabel.setBounds(290, 60, 70, 25);
         leftPanel.add(departureLabel);
 
         departure = new JComboBox<>(new String[]{"Delhi", "Kolkata", "Chennai", "Mumbai", "Bangalore"});
-        departure.setBounds(380, 60, 130, 25);
+        departure.setBounds(370, 60, 150, 25);
         leftPanel.add(departure);
 
         searchFlightButton = new JButton("Search");
-        searchFlightButton.setBounds(210, 100, 100, 30);
+        searchFlightButton.setBounds(230, 100, 100, 30);
         leftPanel.add(searchFlightButton);
 
         // Table for flights
@@ -91,7 +95,7 @@ public class BookFlight extends JInternalFrame {
                 new String[]{"Flight ID", "Flight Name", "Arrival", "Departure", "Duration", "Date"}
         ));
         JScrollPane scrollPane = new JScrollPane(flightTable);
-        scrollPane.setBounds(20, 150, 490, 380);
+        scrollPane.setBounds(20, 150, 520, 360);
         leftPanel.add(scrollPane);
 
         add(leftPanel);
@@ -99,121 +103,121 @@ public class BookFlight extends JInternalFrame {
         // Right Panel (Booking Details)
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.BLUE);
-        rightPanel.setBounds(550, 10, 320, 550);
+        rightPanel.setBounds(580, 10, 390, 540);
         rightPanel.setLayout(null);
 
         JLabel ticketLabel = new JLabel("Ticket ID");
         ticketLabel.setForeground(Color.RED);
         ticketLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        ticketLabel.setBounds(130, 10, 80, 25);
+        ticketLabel.setBounds(20, 10, 90, 25);
         rightPanel.add(ticketLabel);
 
         ticketIDField = new JTextField();
-        ticketIDField.setBounds(210, 10, 90, 25);
+        ticketIDField.setBounds(120, 10, 120, 25);
         ticketIDField.setEditable(false);
         rightPanel.add(ticketIDField);
 
         JLabel custIDLabel = new JLabel("Customer ID");
         custIDLabel.setForeground(Color.WHITE);
-        custIDLabel.setBounds(20, 60, 90, 25);
+        custIDLabel.setBounds(20, 50, 90, 25);
         rightPanel.add(custIDLabel);
 
         custIDField = new JTextField();
-        custIDField.setBounds(120, 60, 120, 25);
+        custIDField.setBounds(120, 50, 120, 25);
         rightPanel.add(custIDField);
 
         searchCustomerButton = new JButton("Search");
-        searchCustomerButton.setBounds(250, 60, 60, 25);
+        searchCustomerButton.setBounds(250, 50, 90, 25);
         rightPanel.add(searchCustomerButton);
 
         JLabel firstNameLabel = new JLabel("First Name");
         firstNameLabel.setForeground(Color.WHITE);
-        firstNameLabel.setBounds(20, 110, 90, 25);
+        firstNameLabel.setBounds(20, 90, 90, 25);
         rightPanel.add(firstNameLabel);
 
         firstName = new JTextField();
-        firstName.setBounds(120, 110, 190, 25);
+        firstName.setBounds(120, 90, 220, 25);
         firstName.setEditable(false);
         rightPanel.add(firstName);
 
         JLabel lastNameLabel = new JLabel("Last Name");
         lastNameLabel.setForeground(Color.WHITE);
-        lastNameLabel.setBounds(20, 150, 90, 25);
+        lastNameLabel.setBounds(20, 130, 90, 25);
         rightPanel.add(lastNameLabel);
 
         lastName = new JTextField();
-        lastName.setBounds(120, 150, 190, 25);
+        lastName.setBounds(120, 130, 220, 25);
         lastName.setEditable(false);
         rightPanel.add(lastName);
 
         JLabel contactLabel = new JLabel("Contact");
         contactLabel.setForeground(Color.WHITE);
-        contactLabel.setBounds(20, 190, 90, 25);
+        contactLabel.setBounds(20, 170, 90, 25);
         rightPanel.add(contactLabel);
 
         contact = new JTextField();
-        contact.setBounds(120, 190, 190, 25);
+        contact.setBounds(120, 170, 220, 25);
         contact.setEditable(false);
         rightPanel.add(contact);
 
         JLabel genderLabel = new JLabel("Gender");
         genderLabel.setForeground(Color.WHITE);
-        genderLabel.setBounds(20, 230, 90, 25);
+        genderLabel.setBounds(20, 210, 90, 25);
         rightPanel.add(genderLabel);
 
         gender = new JTextField();
-        gender.setBounds(120, 230, 190, 25);
+        gender.setBounds(120, 210, 220, 25);
         gender.setEditable(false);
         rightPanel.add(gender);
 
         JLabel fareLabel = new JLabel("Fare");
         fareLabel.setForeground(Color.WHITE);
-        fareLabel.setBounds(20, 270, 90, 25);
+        fareLabel.setBounds(20, 250, 90, 25);
         rightPanel.add(fareLabel);
 
         fare = new JTextField();
-        fare.setBounds(120, 270, 190, 25);
+        fare.setBounds(120, 250, 220, 25);
         fare.setEditable(false);
         rightPanel.add(fare);
 
         JLabel totalTicketsLabel = new JLabel("Total Tickets");
         totalTicketsLabel.setForeground(Color.WHITE);
-        totalTicketsLabel.setBounds(20, 310, 90, 25);
+        totalTicketsLabel.setBounds(20, 290, 90, 25);
         rightPanel.add(totalTicketsLabel);
 
         totalTickets = new JTextField();
-        totalTickets.setBounds(120, 310, 120, 25);
+        totalTickets.setBounds(120, 290, 90, 25);
         rightPanel.add(totalTickets);
 
-        calculateFareButton = new JButton("Calculate Fare");
-        calculateFareButton.setBounds(250, 310, 60, 25);
+        calculateFareButton = new JButton("Total Fare");
+        calculateFareButton.setBounds(220, 290, 120, 25);
         rightPanel.add(calculateFareButton);
 
         JLabel totalFareLabel = new JLabel("Total Fare");
         totalFareLabel.setForeground(Color.WHITE);
-        totalFareLabel.setBounds(20, 350, 90, 25);
+        totalFareLabel.setBounds(20, 330, 90, 25);
         rightPanel.add(totalFareLabel);
 
         totalFareField = new JTextField();
-        totalFareField.setBounds(120, 350, 190, 25);
+        totalFareField.setBounds(120, 330, 220, 25);
         totalFareField.setEditable(false);
         rightPanel.add(totalFareField);
 
         JLabel discountLabel = new JLabel("Discount");
         discountLabel.setForeground(Color.WHITE);
-        discountLabel.setBounds(20, 390, 90, 25);
+        discountLabel.setBounds(20, 370, 90, 25);
         rightPanel.add(discountLabel);
 
         discountField = new JTextField();
-        discountField.setBounds(120, 390, 190, 25);
+        discountField.setBounds(120, 370, 220, 25);
         rightPanel.add(discountField);
 
         bookButton = new JButton("Book");
-        bookButton.setBounds(60, 440, 90, 30);
+        bookButton.setBounds(70, 420, 100, 30);
         rightPanel.add(bookButton);
 
         cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(180, 440, 90, 30);
+        cancelButton.setBounds(200, 420, 100, 30);
         rightPanel.add(cancelButton);
 
         add(rightPanel);

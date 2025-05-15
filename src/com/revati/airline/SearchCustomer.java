@@ -11,6 +11,11 @@ public class SearchCustomer {
         internalFrame.setSize(750, 400);
         internalFrame.setLayout(null);
         internalFrame.getContentPane().setBackground(Color.BLUE);
+     // Center the internal frame in the desktop pane
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension frameSize = internalFrame.getSize();
+        internalFrame.setLocation((desktopSize.width - frameSize.width) / 2, 
+                                  (desktopSize.height - frameSize.height) / 2);
 
         JLabel title = new JLabel("Welcome to the Search Panel", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));

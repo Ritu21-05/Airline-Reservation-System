@@ -11,11 +11,16 @@ import org.jdatepicker.impl.*;
 
 public class AddCustomer {
 
-    public static JInternalFrame getAddCustomerFrame() {
+    public static JInternalFrame getAddCustomerFrame(JDesktopPane desktop) {
         JInternalFrame internalFrame = new JInternalFrame("Add Customer", true, true, true, true);
         internalFrame.setSize(700, 400);
         internalFrame.setLayout(null);
         internalFrame.getContentPane().setBackground(Color.BLUE);
+     // Center the internal frame in the desktop pane
+        Dimension desktopSize = desktop.getSize();
+        Dimension frameSize = internalFrame.getSize();
+        internalFrame.setLocation((desktopSize.width - frameSize.width) / 2, 
+                                  (desktopSize.height - frameSize.height) / 2);
       
 
         JLabel title = new JLabel("Welcome to the Customer Panel", SwingConstants.CENTER);

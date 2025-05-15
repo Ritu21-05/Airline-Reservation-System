@@ -16,7 +16,11 @@ public class AddFlight {
         internalFrame.setSize(700, 450);
         internalFrame.setLayout(null);
         internalFrame.getContentPane().setBackground(Color.LIGHT_GRAY);
-        
+     // Center the internal frame in the desktop pane
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension frameSize = internalFrame.getSize();
+        internalFrame.setLocation((desktopSize.width - frameSize.width) / 2, 
+                                  (desktopSize.height - frameSize.height) / 2);
 
         JLabel title = new JLabel("Welcome to the Flight Panel", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));

@@ -23,9 +23,14 @@ public class ViewTicket extends JInternalFrame {
     private JTextField contactField;
     private JTextField flightNameField;
 
-    public ViewTicket() {
+    public ViewTicket(JDesktopPane desktop) {
         initComponents();
         connectDatabase();
+     // Center the internal frame in the desktop pane
+        Dimension desktopSize = desktop.getSize();
+        Dimension frameSize =getSize();
+        setLocation((desktopSize.width - frameSize.width) / 2, 
+                                  (desktopSize.height - frameSize.height) / 2);
     }
 
     private void initComponents() {
