@@ -1,24 +1,43 @@
-# ✈️ Airline Ticket Booking System
+# Airline Reservation System
 
-This is a **Java Swing-based Airline Ticket Booking System** that allows users to search flights, view customer details, calculate fares, and book tickets. The system connects to a **MySQL database** using **JDBC** for data storage and retrieval.
+## Overview
+This is a Java-based Airline Reservation System project with a graphical user interface (GUI) built using Java Swing and a backend database managed with MySQL. The system allows admins to manage flights, customers, and bookings efficiently.
 
-## 📌 Features
+## Features
+- Admin login authentication
+- Add and search customers
+- Add and search flights
+- Book flight tickets with fare calculation
+- Generate and view tickets
+- Admin management
 
-- Search flights by **Arrival** and **Departure** cities
-- Display available flights in a **JTable**
-- View and fetch **Customer details**
-- Auto-generate **Ticket ID**
-- Calculate fare based on number of tickets
-- Book tickets and store them in MySQL database
-- Built with **Java Swing** GUI
+## Technologies Used
+- Java Swing for GUI
+- MySQL for database management
+- JDBC for database connectivity
+- Eclispe IDE for development
 
----
+## Setup Instructions
+1. Clone the repository:https://github.com/Ritu21-05/Airline-Reservation-System.git
+2. Install and set up MySQL and MySQL Workbench.
+3. Create the database and tables using the provided SQL scripts or manually as per the schema.
+4. Update database connection credentials in the Java source code (`username`, `password`, `database URL`).
+5. Open the project in Eclispe IDE.
+6. Build and run the project starting from the `LoginFrame`.
 
-## 🛠️ Technologies Used
+## Usage
+- Launch the application.
+- Login with admin credentials.
+- Use the menu to navigate between customer, flight, ticket, and admin management.
+- Perform operations like adding customers, flights, booking tickets, and viewing tickets.
 
-- **Java SE (Swing, AWT)**
-- **MySQL Database**
-- **JDBC (Java Database Connectivity)**
-- **Eclipse** (Recommended IDEs)
+## Future Enhancements
+- Add payment gateway integration.
+- Implement ticket cancellation.
+- Improve UI/UX design.
+- Add role-based access control.
 
----
+## Author
+- Your Name Ritu Joshi
+- Contact:ritujoshi706@gmail.com
+
